@@ -2,7 +2,7 @@ import numpy as np
 import random
 import scipy.special
 import os
-from scipy.stats import bernoulli
+from scipy.stats import bernoulli                    
 
 
 def get_multivariate_normal_params(m, dep, seed=0):
@@ -125,7 +125,17 @@ def generate_XTY(run_dict, size=0):
     print('x.shape:',x.shape,'t.shape:',t.shape,'mu0.shape:',mu_0.shape,'mu1.shape:',mu_1.shape)
     return {'x':x, 't':t, 'mu0':mu_0, 'mu1':mu_1, 'z':pi0_t1}
 
+
+'''
+description: 
+param {*} data 输入数据
+param {*} r bias rate 
+param {*} n size
+param {*} dim_v Dimensions of irrelevant variables
+return {*}
+'''
 def correlation_sample(data, r, n, dim_v):
+    
     nall = data['x'].shape[0]
     prob = np.ones(nall)
 
@@ -133,7 +143,8 @@ def correlation_sample(data, r, n, dim_v):
 
     if r!=0.0:
         for idv in range(dim_v):
-            d = np.abs(data['x'][:, -idv - 1] - np.sign(r) * ite)
+            # 和表达式不一样
+            d = np.abs(data['x'][:, -idv - 1] - np.sign(r) * ite) 
             prob = prob * np.power(np.abs(r), -10 * d)
     prob = prob / np.sum(prob)
     idx = np.random.choice(range(nall), n, p=prob)
