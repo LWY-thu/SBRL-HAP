@@ -89,12 +89,16 @@ def generate_XTY(run_dict, size=0):
         coefs_1 = np.ones(shape=mA + mB)
     
     # generate t_binary
+    print('AB.shape ', AB.shape)
+    print('coefs_1.shape ', coefs_1.shape)
     z = np.dot(AB, coefs_1)
     if random_coef == "True" or random_coef == "T" or use_one == "True" or use_one == "T":   
         pass
     else:
         z = z / run_dict["coef_devide_1"]
     per = np.random.normal(size=n_trn)
+    print('per.shape ', per.shape)
+    print('z.shape ', z.shape)
     pi0_t1 = scipy.special.expit(sc * (z + sh + per))
 
     t = bernoulli.rvs(pi0_t1)
@@ -184,9 +188,12 @@ def run(run_dict):
     outdir_conty = run_dict['outdir'] + 'syn_conty/'
     outdir_biny = run_dict['outdir'] + 'syn_biny/'
     if not os.path.exists(outdir_conty):
-        os.mkdir(outdir_conty)
+        # os.mkdir(outdir_conty)
+        print(outdir_conty)
+        os.makedirs(os.path.dirname(outdir_conty), exist_ok=True)
     if not os.path.exists(outdir_biny):
-        os.mkdir(outdir_biny)
+        # os.mkdir(outdir_biny)
+        os.makedirs(os.path.dirname(outdir_biny), exist_ok=True)
     
     # train & test size
     size = run_dict['size']
